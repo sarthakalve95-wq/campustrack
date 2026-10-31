@@ -518,18 +518,27 @@
         }
 
         // FULL HD DRIVE IMAGE UPLOAD HANDLER
-        function handleReportFound(e) {
+       function handleReportFound(e) {
             e.preventDefault();
             const btn = document.getElementById('found-submit-btn');
             btn.disabled = true;
-            btn.innerText = 'Uploading to Drive...';
+            btn.innerText = 'Uploading HD Photo...';
 
             const fileInput = document.getElementById('found-photo');
             const file = fileInput.files[0];
-            const reader = new FileReader();
             
+            if (!file) {
+                showAlert("Error", "Please select an image file.");
+                btn.disabled = false;
+                btn.innerText = 'Publish to Drive (+50 Pts)';
+                return;
+            }
+
+            const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(evt) {
+                const base64Photo = evt.target.result; // Full resolution data
+
                 const payload = {
                     id: Date.now(),
                     reporter: currentUser.name,
@@ -537,7 +546,7 @@
                     category: document.getElementById('found-category').value,
                     location: document.getElementById('found-location').value,
                     desc: document.getElementById('found-description').value,
-                    photo: evt.target.result, // Direct full base64 data for Drive app
+                    photo: base64Photo,
                     timestamp: new Date().toLocaleString()
                 };
 
@@ -554,17 +563,20 @@
                     savePersistentUser();
                     updateUIUserHeader();
                     syncUserToCloud();
+
                     showAlert("Success!", "HD Photo saved to Google Drive!");
                     document.getElementById('form-report-found').reset();
-                    switchTab('catalog');
-                }).catch(() => {
+                    
+                    setTimeout(() => {
+                        switchTab('catalog');
+                    }, 1500);
+                }).catch(err => {
                     btn.disabled = false;
                     btn.innerText = 'Publish to Drive (+50 Pts)';
-                    switchTab('catalog');
+                    showAlert("Error", "Failed to upload photo.");
                 });
-            }
+            };
         }
-
         function filterCatalog(cat) {
             currentFilter = cat;
             renderCatalog(cat);
