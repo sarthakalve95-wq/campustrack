@@ -8,7 +8,7 @@
         // =========================================================================
         // ⬇️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL RIGHT HERE INSIDE QUOTES ⬇️
         // =========================================================================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxh9GSntOwOX6osovWlYPIvoZVfpopZm8-uUvVvBxfV8WAxCQArj3abSvtjKOsBjRev/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHbMRAKOn0cL83toPX1e9vum7-_71O1i9t4Lq2a_SsTxasG7r27R7XXxFWr-ujh0Jo/exec";
         // =========================================================================
     </script>
     <style>
@@ -539,65 +539,25 @@
 
         function handleReportFound(e) {
             e.preventDefault();
+            if (!requireLogin()) return;
             const btn = document.getElementById('found-submit-btn');
-            btn.disabled = true;
-            btn.innerText = 'Uploading...';
-
-            const fileInput = document.getElementById('found-photo');
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.readAsDataURL(file);
-            reader.onload = function(evt) {
-                const img = new Image();
-                img.src = evt.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800; // Optimized for speed and clarity
-                    const scale = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * (scale < 1 ? scale : 1);
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    // High-speed JPEG compression (0.7 quality)
-                    const optimizedPhoto = canvas.toDataURL('image/jpeg', 0.7);
-
-                    const payload = {
-                        id: Date.now(),
-                        reporter: currentUser.name,
-                        title: document.getElementById('found-title').value,
-                        category: document.getElementById('found-category').value,
-                        location: document.getElementById('found-location').value,
-                        desc: document.getElementById('found-description').value,
-                        photo: optimizedPhoto,
-                        timestamp: new Date().toLocaleString()
-                    };
-
-                    fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    }).then(() => {
-                        btn.disabled = false;
-                        btn.innerText = 'Publish to Drive (+50 Pts)';
-                        currentUser.points += 50;
-                        currentUser.itemsReturned = (currentUser.itemsReturned || 0) + 1;
-                        savePersistentUser();
-                        updateUIUserHeader();
-                        syncUserToCloud();
-                        showAlert("Success!", "Item published successfully!");
-                        document.getElementById('form-report-found').reset();
-                        setTimeout(() => switchTab('catalog'), 1200);
-                    }).catch(() => {
-                        btn.disabled = false;
-                        btn.innerText = 'Publish to Drive (+50 Pts)';
-                        switchTab('catalog');
-                    });
-                };
-            };
+            btn.disabled = true; btn.innerText = 'Syncing to Cloud...';
+            compressImage(document.getElementById('found-photo').files[0]).then(photo =>
+                api({ action: 'reportFound', ...creds(),
+                      title: document.getElementById('found-title').value,
+                      category: document.getElementById('found-category').value,
+                      location: document.getElementById('found-location').value,
+                      desc: document.getElementById('found-description').value,
+                      code: document.getElementById('found-code').value.trim(),
+                      photo })
+            ).then(res => {
+                btn.disabled = false; btn.innerText = 'Publish to Cloud (+50 Pts)';
+                if (!res.ok) { showAlert('Error', res.error); return; }
+                setUser(res.user);
+                showAlert('Success!', 'Item published and +50 points added!');
+                document.getElementById('form-report-found').reset();
+                switchTab('catalog');
+            }).catch(() => { btn.disabled = false; btn.innerText = 'Publish to Cloud (+50 Pts)'; showAlert('Error', 'Could not upload. Please try again.'); });
         }
 
         /* ---------------- Catalog + claiming ---------------- */
