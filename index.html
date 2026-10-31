@@ -388,21 +388,38 @@
 
         /* ---------------- Cloud data ---------------- */
         function fetchCloudData() {
-            fetch(SCRIPT_URL + '?t=' + Date.now())
+            if(!SCRIPT_URL) return;
+            
+            fetch(SCRIPT_URL, {
+                redirect: 'follow'
+            })
                 .then(res => res.json())
                 .then(data => {
-                    foundItems = (data.foundItems || []).slice().reverse();
+                    foundItems = data.foundItems ? data.foundItems.reverse() : [];
                     cloudUsers = data.users || [];
-                    if (currentUser) {
-                        const me = cloudUsers.find(u => normName(u.name) === normName(currentUser.name));
-                        if (me) setUser(me);
+                    
+                    if(currentUser.name !== 'Guest Student') {
+                        let match = cloudUsers.find(u => 
+                            u.name.toString().trim().toLowerCase() === currentUser.name.toString().trim().toLowerCase()
+                        );
+                        if(match) {
+                            currentUser.points = parseInt(match.points) || currentUser.points;
+                            currentUser.itemsReturned = parseInt(match.itemsReturned) || currentUser.itemsReturned;
+                            savePersistentUser();
+                            updateUIUserHeader();
+                        }
                     }
-                    renderCatalog(currentFilter);
-                    if (!document.getElementById('tab-leaderboard').classList.contains('hidden')) renderLeaderboard();
-                })
-                .catch(err => console.error('Cloud fetch error:', err));
-        }
 
+                    renderCatalog(currentFilter);
+                    if(!document.getElementById('tab-leaderboard').classList.contains('hidden')) {
+                        renderLeaderboard();
+                    }
+                })
+                .catch(err => {
+                    console.error("Cloud fetch error:", err);
+                    document.getElementById('catalog-grid').innerHTML = `<div style="text-align: center; color: #ef4444; padding: 30px;">Failed to load cloud records. Check Apps Script deployment.</div>`;
+                });
+        }
         function getBadgeClass(category) {
             switch (category) {
                 case 'Electronic devices': return 'badge-blue';
