@@ -49,6 +49,15 @@
         .rank-1 { background: #f59e0b; color: #0f172a; }
         .rank-2 { background: #94a3b8; color: #0f172a; }
         .rank-3 { background: #b45309; color: white; }
+        /* Mobile Responsiveness Fixes */
+        @media (max-width: 768px) {
+            header { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; }
+            nav { justify-content: center; }
+            .hero { padding: 20px; }
+            .hero h2 { font-size: 26px; }
+            .form-box { padding: 20px; margin: 0 8px; }
+            .grid-4 { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
