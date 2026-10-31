@@ -50,13 +50,48 @@
         .rank-2 { background: #94a3b8; color: #0f172a; }
         .rank-3 { background: #b45309; color: white; }
         /* Mobile Responsiveness Fixes */
+        /* Mobile Responsiveness Fixes */
         @media (max-width: 768px) {
-            header { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; }
-            nav { justify-content: center; }
-            .hero { padding: 20px; }
-            .hero h2 { font-size: 26px; }
-            .form-box { padding: 20px; margin: 0 8px; }
-            .grid-4 { grid-template-columns: 1fr; }
+            header { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 12px; 
+                padding: 12px; 
+            }
+            .logo-area { 
+                width: 100%; 
+                justify-content: center; 
+            }
+            nav { 
+                width: 100%; 
+                justify-content: center; 
+                gap: 4px; 
+            }
+            nav button { 
+                padding: 6px 10px; 
+                font-size: 12px; 
+            }
+            .points-box { 
+                width: 100%; 
+                justify-content: center; 
+            }
+            .container { 
+                padding: 12px; 
+            }
+            .hero { 
+                padding: 20px; 
+            }
+            .hero h2 { 
+                font-size: 24px; 
+            }
+            .form-box { 
+                padding: 16px; 
+                margin: 0; 
+                width: 100%; 
+            }
+            .grid-4 { 
+                grid-template-columns: 1fr; 
+            }
         }
     </style>
 </head>
