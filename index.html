@@ -2,122 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CampusTrack - School Lost & Found</title>
     <script>
         // =========================================================================
         // ⬇️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL RIGHT HERE INSIDE QUOTES ⬇️
         // =========================================================================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyP2FCkW5TK7jm9l_OfRAvdmluOETZm78l8ROBjrqisM1y__JbblsNKLR1aGKsqGV6V/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHbMRAKOn0cL83toPX1e9vum7-_71O1i9t4Lq2a_SsTxasG7r27R7XXxFWr-ujh0Jo/exec";
         // =========================================================================
     </script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
-        header { background-color: #1e293b; border-bottom: 1px solid #334155; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 40; }
-        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo-icon { background-color: #10b981; color: #0f172a; padding: 10px; border-radius: 10px; font-weight: bold; }
-        nav { display: flex; gap: 6px; background: rgba(15, 23, 42, 0.5); padding: 4px; border-radius: 12px; border: 1px solid #334155; flex-wrap: wrap; }
-        nav button { background: transparent; border: none; color: #cbd5e1; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.2s; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; width: 100%; }
+        
+        /* Header Layout */
+        header { background-color: #1e293b; border-bottom: 1px solid #334155; padding: 12px 16px; display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; z-index: 40; width: 100%; }
+        
+        .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-icon { background-color: #10b981; color: #0f172a; padding: 8px 10px; border-radius: 10px; font-weight: bold; font-size: 18px; }
+        
+        /* Responsive Navigation Bar */
+        nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: rgba(15, 23, 42, 0.6); padding: 6px; border-radius: 12px; border: 1px solid #334155; width: 100%; }
+        nav button { background: transparent; border: none; color: #cbd5e1; padding: 10px 4px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; text-align: center; transition: 0.2s; width: 100%; }
         nav button.active, nav button:hover { background-color: #059669; color: white; }
-        .container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 24px; flex-grow: 1; }
-        .hero { background: linear-gradient(135deg, rgba(6, 78, 59, 0.4), #1e293b, rgba(49, 46, 129, 0.4)); border: 1px solid #334155; border-radius: 24px; padding: 40px; margin-bottom: 30px; }
-        .hero h2 { font-size: 36px; margin-bottom: 12px; color: white; }
+        
+        .container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 16px; flex-grow: 1; }
+        
+        /* Hero Section */
+        .hero { background: linear-gradient(135deg, rgba(6, 78, 59, 0.4), #1e293b, rgba(49, 46, 129, 0.4)); border: 1px solid #334155; border-radius: 20px; padding: 24px 16px; margin-bottom: 24px; text-align: center; }
+        .hero h2 { font-size: 24px; margin-bottom: 10px; color: white; line-height: 1.3; }
         .hero h2 span { color: #34d399; }
-        .hero p { color: #94a3b8; font-size: 16px; margin-bottom: 24px; line-height: 1.5; }
-        .btn-primary { background-color: #10b981; color: #0f172a; padding: 12px 24px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; font-size: 15px; }
+        .hero p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+        .hero-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        
+        /* Buttons */
+        .btn-primary { background-color: #10b981; color: #0f172a; padding: 12px 16px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; width: 100%; text-align: center; }
         .btn-primary:hover { background-color: #059669; color: white; }
-        .btn-secondary { background-color: #3b82f6; color: white; padding: 8px 16px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 13px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; }
-        .badge-blue { background: rgba(30, 58, 138, 0.5); border: 1px solid #3b82f6; color: #bfdbfe; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; }
-        .badge-red { background: rgba(127, 29, 29, 0.5); border: 1px solid #ef4444; color: #fecaca; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; }
-        .badge-green { background: rgba(6, 78, 59, 0.5); border: 1px solid #10b981; color: #a7f3d0; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; }
-        .badge-yellow { background: rgba(120, 53, 15, 0.5); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; }
-        .form-box { background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 30px; max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 14px; font-weight: 500; color: #cbd5e1; margin-bottom: 8px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; font-size: 15px; outline: none; }
+        .btn-secondary { background-color: #3b82f6; color: white; padding: 10px 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 13px; width: 100%; text-align: center; }
+        
+        /* Grids & Cards */
+        .grid-cards { display: grid; grid-template-columns: 1fr; gap: 14px; }
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+        
+        /* Badges */
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; display: inline-block; }
+        .badge-blue { background: rgba(30, 58, 138, 0.5); border: 1px solid #3b82f6; color: #bfdbfe; }
+        .badge-red { background: rgba(127, 29, 29, 0.5); border: 1px solid #ef4444; color: #fecaca; }
+        .badge-green { background: rgba(6, 78, 59, 0.5); border: 1px solid #10b981; color: #a7f3d0; }
+        .badge-yellow { background: rgba(120, 53, 15, 0.5); border: 1px solid #f59e0b; color: #fde68a; }
+        
+        /* Form Components */
+        .form-box { background: #1e293b; border: 1px solid #334155; border-radius: 18px; padding: 20px 16px; width: 100%; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; color: #cbd5e1; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; font-size: 14px; outline: none; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #10b981; }
+        
         .hidden { display: none !important; }
-        .points-box { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 10px; }
-        .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 16px; background: #1e293b; border-radius: 16px; overflow: hidden; border: 1px solid #334155; }
-        .leaderboard-table th, .leaderboard-table td { padding: 16px; text-align: left; }
-        .leaderboard-table th { background: #0f172a; color: #94a3b8; font-size: 13px; text-transform: uppercase; }
+        .points-box { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; padding: 6px 12px; border-radius: 12px; font-weight: bold; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+        
+        /* Responsive Leaderboard Table */
+        .table-responsive { width: 100%; overflow-x: auto; background: #1e293b; border-radius: 16px; border: 1px solid #334155; }
+        .leaderboard-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 500px; }
+        .leaderboard-table th, .leaderboard-table td { padding: 12px 14px; font-size: 13px; }
+        .leaderboard-table th { background: #0f172a; color: #94a3b8; text-transform: uppercase; font-size: 11px; }
         .leaderboard-table tr:not(:last-child) { border-bottom: 1px solid #334155; }
-        .rank-badge { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 14px; }
+        
+        .rank-badge { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 12px; }
         .rank-1 { background: #f59e0b; color: #0f172a; }
         .rank-2 { background: #94a3b8; color: #0f172a; }
         .rank-3 { background: #b45309; color: white; }
-        /* Mobile Responsiveness Fixes */
-        /* Mobile Responsiveness Fixes */
-        @media (max-width: 768px) {
-            header { 
-                flex-direction: column; 
-                align-items: center; 
-                gap: 12px; 
-                padding: 12px; 
-            }
-            .logo-area { 
-                width: 100%; 
-                justify-content: center; 
-            }
-            nav { 
-                width: 100%; 
-                justify-content: center; 
-                gap: 4px; 
-            }
-            nav button { 
-                padding: 6px 10px; 
-                font-size: 12px; 
-            }
-            .points-box { 
-                width: 100%; 
-                justify-content: center; 
-            }
-            .container { 
-                padding: 12px; 
-            }
-            .hero { 
-                padding: 20px; 
-            }
-            .hero h2 { 
-                font-size: 24px; 
-            }
-            .form-box { 
-                padding: 16px; 
-                margin: 0; 
-                width: 100%; 
-            }
-            .grid-4 { 
-                grid-template-columns: 1fr; 
-            }
+
+        /* Desktop Layout Enhancements */
+        @media (min-width: 768px) {
+            header { flex-direction: row; justify-content: space-between; padding: 12px 24px; }
+            nav { display: flex; width: auto; gap: 6px; }
+            nav button { width: auto; padding: 8px 16px; font-size: 14px; }
+            .container { padding: 24px; }
+            .hero { padding: 40px; text-align: left; }
+            .hero h2 { font-size: 34px; }
+            .hero-btns { flex-direction: row; width: auto; }
+            .btn-primary, .btn-secondary { width: auto; }
+            .grid-cards { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+            .form-box { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-area" onclick="switchTab('home')">
-            <div class="logo-icon">📦</div>
-            <div>
-                <h1 style="font-size: 16px; color: white;">CampusTrack</h1>
-                <p style="font-size: 11px; color: #94a3b8;">School Lost & Found Portal</p>
+        <div class="header-top">
+            <div class="logo-area" onclick="switchTab('home')">
+                <div class="logo-icon">📦</div>
+                <div>
+                    <h1 style="font-size: 16px; color: white;">CampusTrack</h1>
+                    <p style="font-size: 11px; color: #94a3b8;">School Lost & Found</p>
+                </div>
+            </div>
+            <div class="points-box">
+                <span id="user-display-name">👤 Guest</span>
+                <span id="user-points">⭐ 50 Pts</span>
+                <button onclick="openAuthModal()" class="btn-secondary" style="padding: 4px 8px; font-size: 11px; width: auto;">Account</button>
             </div>
         </div>
         <nav>
             <button onclick="switchTab('home')" id="nav-home" class="active">Home</button>
             <button onclick="switchTab('report-lost')" id="nav-report-lost">Report Lost</button>
             <button onclick="switchTab('report-found')" id="nav-report-found">Report Found</button>
-            <button onclick="switchTab('catalog')" id="nav-catalog">Found Catalog</button>
-            <button onclick="switchTab('leaderboard')" id="nav-leaderboard">🏆 Leaderboard</button>
-            <button onclick="switchTab('inventory')" id="nav-inventory">My Inventory</button>
+            <button onclick="switchTab('catalog')" id="nav-catalog">Catalog</button>
+            <button onclick="switchTab('leaderboard')" id="nav-leaderboard">🏆 Top Users</button>
+            <button onclick="switchTab('inventory')" id="nav-inventory">My Items</button>
         </nav>
-        <div class="points-box">
-            <span id="user-display-name">👤 Guest</span>
-            <span id="user-points" style="color: #f59e0b;">⭐ 50 Pts</span>
-            <button onclick="openAuthModal()" class="btn-secondary" id="auth-btn">Account</button>
-        </div>
     </header>
 
     <main class="container">
@@ -125,29 +121,29 @@
         <section id="tab-home" class="tab-content">
             <div class="hero">
                 <h2>Lost Something on Campus?<br><span>We'll help you find it securely.</span></h2>
-                <p>Register items to get 4-digit security codes or return found items to climb the live global Cloud Leaderboard!</p>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <p>Register items for a 4-digit claim code or report found items to earn points on the global leaderboard!</p>
+                <div class="hero-btns">
                     <button class="btn-primary" onclick="switchTab('report-found')">Report Found Item (+50 Pts)</button>
                     <button class="btn-secondary" onclick="switchTab('inventory')">Manage My Inventory</button>
                 </div>
             </div>
 
-            <h3 style="margin-bottom: 16px; font-size: 18px;">Item Categories & Color Coding</h3>
-            <div class="grid-4">
-                <div class="card"><span style="font-size: 24px;">🔵</span><div><h4 style="color: #bfdbfe; font-size: 15px;">Electronic Devices</h4><p style="font-size: 12px; color: #94a3b8;">Laptops, phones</p></div></div>
-                <div class="card"><span style="font-size: 24px;">🔴</span><div><h4 style="color: #fecaca; font-size: 15px;">Books</h4><p style="font-size: 12px; color: #94a3b8;">Textbooks, diaries</p></div></div>
-                <div class="card"><span style="font-size: 24px;">🟢</span><div><h4 style="color: #a7f3d0; font-size: 15px;">Stationery</h4><p style="font-size: 12px; color: #94a3b8;">Pouches, pens</p></div></div>
-                <div class="card"><span style="font-size: 24px;">🟡</span><div><h4 style="color: #fde68a; font-size: 15px;">Personal Items</h4><p style="font-size: 12px; color: #94a3b8;">Bags, jackets</p></div></div>
+            <h3 style="margin-bottom: 14px; font-size: 16px;">Item Categories</h3>
+            <div class="grid-cards">
+                <div class="card"><span style="font-size: 24px;">🔵</span><div><h4 style="color: #bfdbfe; font-size: 14px;">Electronics</h4><p style="font-size: 12px; color: #94a3b8;">Laptops, phones, calculators</p></div></div>
+                <div class="card"><span style="font-size: 24px;">🔴</span><div><h4 style="color: #fecaca; font-size: 14px;">Books & Notebooks</h4><p style="font-size: 12px; color: #94a3b8;">Textbooks, guides, diaries</p></div></div>
+                <div class="card"><span style="font-size: 24px;">🟢</span><div><h4 style="color: #a7f3d0; font-size: 14px;">Stationery</h4><p style="font-size: 12px; color: #94a3b8;">Pouches, pens, geometry sets</p></div></div>
+                <div class="card"><span style="font-size: 24px;">🟡</span><div><h4 style="color: #fde68a; font-size: 14px;">Personal Items</h4><p style="font-size: 12px; color: #94a3b8;">Bags, jackets, bottles</p></div></div>
             </div>
         </section>
 
         <!-- REPORT LOST TAB -->
         <section id="tab-report-lost" class="tab-content hidden">
             <div class="form-box">
-                <h2 style="font-size: 22px; margin-bottom: 6px;">Report a Lost Item</h2>
-                <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Syncs directly to Google Sheets database.</p>
+                <h2 style="font-size: 20px; margin-bottom: 4px;">Report a Lost Item</h2>
+                <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">Syncs to cloud database for verification.</p>
                 <form id="form-report-lost" onsubmit="handleReportLost(event)">
-                    <div class="form-group"><label>Item Title *</label><input type="text" id="lost-title" required placeholder="e.g. Black Dell Laptop Bag"></div>
+                    <div class="form-group"><label>Item Title *</label><input type="text" id="lost-title" required placeholder="e.g. Black Backpack"></div>
                     <div class="form-group"><label>Category *</label>
                         <select id="lost-category" required>
                             <option value="Electronic devices">🔵 Electronic devices</option>
@@ -156,9 +152,9 @@
                             <option value="Personal belongings">🟡 Personal belongings</option>
                         </select>
                     </div>
-                    <div class="form-group"><label>Location Lost</label><input type="text" id="lost-location" placeholder="e.g. Library"></div>
+                    <div class="form-group"><label>Location Lost</label><input type="text" id="lost-location" placeholder="e.g. Science Lab"></div>
                     <div class="form-group"><label>Description *</label><textarea id="lost-description" required rows="3" placeholder="Provide details..."></textarea></div>
-                    <button type="submit" id="lost-submit-btn" class="btn-primary" style="width: 100%;">Submit Lost Report</button>
+                    <button type="submit" id="lost-submit-btn" class="btn-primary">Submit Lost Report</button>
                 </form>
             </div>
         </section>
@@ -166,10 +162,10 @@
         <!-- REPORT FOUND TAB -->
         <section id="tab-report-found" class="tab-content hidden">
             <div class="form-box">
-                <h2 style="font-size: 22px; margin-bottom: 6px;">Report a Found Item</h2>
-                <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Syncs HD photos to Google Drive & adds +50 global points!</p>
+                <h2 style="font-size: 20px; margin-bottom: 4px;">Report a Found Item</h2>
+                <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">Upload HD photos directly to Google Drive (+50 Pts).</p>
                 <form id="form-report-found" onsubmit="handleReportFound(event)">
-                    <div class="form-group"><label>Item Name *</label><input type="text" id="found-title" required placeholder="e.g. Calculator"></div>
+                    <div class="form-group"><label>Item Name *</label><input type="text" id="found-title" required placeholder="e.g. Blue Water Bottle"></div>
                     <div class="form-group"><label>Category *</label>
                         <select id="found-category" required>
                             <option value="Electronic devices">🔵 Electronic devices</option>
@@ -178,84 +174,86 @@
                             <option value="Personal belongings">🟡 Personal belongings</option>
                         </select>
                     </div>
-                    <div class="form-group"><label>Location Found *</label><input type="text" id="found-location" required placeholder="e.g. Room 104"></div>
+                    <div class="form-group"><label>Location Found *</label><input type="text" id="found-location" required placeholder="e.g. Playground"></div>
                     <div class="form-group"><label>Photo Upload *</label><input type="file" id="found-photo" accept="image/*" required style="padding: 8px;"></div>
-                    <div class="form-group"><label>Description</label><textarea id="found-description" rows="2" placeholder="Condition..."></textarea></div>
-                    <button type="submit" id="found-submit-btn" class="btn-primary" style="width: 100%;">Publish to Cloud (+50 Pts)</button>
+                    <div class="form-group"><label>Description</label><textarea id="found-description" rows="2" placeholder="Item condition..."></textarea></div>
+                    <button type="submit" id="found-submit-btn" class="btn-primary">Publish to Drive (+50 Pts)</button>
                 </form>
             </div>
         </section>
 
         <!-- CATALOG TAB -->
         <section id="tab-catalog" class="tab-content hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-                <h2 style="font-size: 22px;">Cloud Found Catalog</h2>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button onclick="filterCatalog('all')" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">All Items</button>
-                    <button onclick="filterCatalog('Electronic devices')" style="background: rgba(30, 58, 138, 0.5); color: #bfdbfe; border: 1px solid #3b82f6; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;">🔵 Electronic devices</button>
-                    <button onclick="filterCatalog('Books')" style="background: rgba(127, 29, 29, 0.5); color: #fecaca; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;">🔴 Books</button>
-                    <button onclick="filterCatalog('Stationery')" style="background: rgba(6, 78, 59, 0.5); color: #a7f3d0; border: 1px solid #10b981; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;">🟢 Stationery</button>
-                    <button onclick="filterCatalog('Personal belongings')" style="background: rgba(120, 53, 15, 0.5); color: #fde68a; border: 1px solid #f59e0b; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;">🟡 Personal belongings</button>
+            <div style="margin-bottom: 16px;">
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Found Catalog</h2>
+                <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px;">
+                    <button onclick="filterCatalog('all')" class="btn-primary" style="padding: 6px 12px; font-size: 11px; width: auto; white-space: nowrap;">All Items</button>
+                    <button onclick="filterCatalog('Electronic devices')" class="badge badge-blue" style="cursor:pointer; white-space: nowrap;">🔵 Electronics</button>
+                    <button onclick="filterCatalog('Books')" class="badge badge-red" style="cursor:pointer; white-space: nowrap;">🔴 Books</button>
+                    <button onclick="filterCatalog('Stationery')" class="badge badge-green" style="cursor:pointer; white-space: nowrap;">🟢 Stationery</button>
+                    <button onclick="filterCatalog('Personal belongings')" class="badge badge-yellow" style="cursor:pointer; white-space: nowrap;">🟡 Personal</button>
                 </div>
             </div>
-            <div class="grid-4" id="catalog-grid">
-                <div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">Loading cloud records...</div>
+            <div class="grid-cards" id="catalog-grid">
+                <div style="text-align: center; color: #94a3b8; padding: 30px;">Loading catalog records...</div>
             </div>
         </section>
 
         <!-- LEADERBOARD TAB -->
         <section id="tab-leaderboard" class="tab-content hidden">
-            <div style="margin-bottom: 24px;">
-                <h2 style="font-size: 26px; color: white;">🏆 Global Cloud Leaderboard</h2>
-                <p style="color: #94a3b8; font-size: 14px; margin-top: 4px;">Synced live from Google Sheets across all student devices.</p>
+            <div style="margin-bottom: 16px;">
+                <h2 style="font-size: 22px; color: white;">🏆 Global Leaderboard</h2>
+                <p style="color: #94a3b8; font-size: 13px;">Synced live across all student accounts.</p>
             </div>
-            <table class="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Student Name</th>
-                        <th>Student ID / Grade</th>
-                        <th>Items Returned</th>
-                        <th>Total Points</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboard-body">
-                    <tr><td colspan="5" style="text-align: center; color: #94a3b8;">Loading leaderboard...</td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Student</th>
+                            <th>ID / Grade</th>
+                            <th>Returned</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <tr><td colspan="5" style="text-align: center; color: #94a3b8;">Loading leaderboard...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- INVENTORY TAB -->
         <section id="tab-inventory" class="tab-content hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="font-size: 22px;">My Registered Items Inventory</h2>
-                <button class="btn-primary" onclick="openRegisterModal()">+ Register Item</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="font-size: 20px;">My Registered Items</h2>
+                <button class="btn-primary" onclick="openRegisterModal()" style="width: auto; padding: 8px 14px; font-size: 12px;">+ Register</button>
             </div>
-            <div class="grid-4" id="inventory-grid"></div>
+            <div class="grid-cards" id="inventory-grid"></div>
         </section>
     </main>
 
     <!-- Modal: Account -->
-    <div id="modal-auth" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 50;">
-        <div class="form-box" style="width: 100%; max-width: 420px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-                <h3 style="font-size: 18px; color: white;">Student Account Setup</h3>
-                <button onclick="closeAuthModal()" style="background:none; border:none; color:white; cursor:pointer; font-size: 16px;">✕</button>
+    <div id="modal-auth" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index: 50; padding: 16px;">
+        <div class="form-box">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
+                <h3 style="font-size: 16px; color: white;">Student Profile</h3>
+                <button onclick="closeAuthModal()" style="background:none; border:none; color:white; cursor:pointer; font-size: 18px;">✕</button>
             </div>
             <form onsubmit="handleAccountSubmit(event)">
                 <div class="form-group"><label>Full Name *</label><input type="text" id="auth-name" required placeholder="e.g. Alex Smith"></div>
                 <div class="form-group"><label>Student ID / Grade *</label><input type="text" id="auth-studentid" required placeholder="e.g. GR8-104"></div>
-                <button type="submit" class="btn-primary" style="width: 100%;">Save Profile</button>
+                <button type="submit" class="btn-primary">Save Profile</button>
             </form>
         </div>
     </div>
 
     <!-- Modal: Register Item -->
-    <div id="modal-register" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 50;">
-        <div class="form-box" style="width: 100%; max-width: 400px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px;"><h3 style="font-size: 18px; color: white;">Register Item & Get Code</h3><button onclick="closeRegisterModal()" style="background:none; border:none; color:white; cursor:pointer; font-size: 16px;">✕</button></div>
+    <div id="modal-register" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index: 50; padding: 16px;">
+        <div class="form-box">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 14px;"><h3 style="font-size: 16px; color: white;">Register Item</h3><button onclick="closeRegisterModal()" style="background:none; border:none; color:white; cursor:pointer; font-size: 18px;">✕</button></div>
             <form onsubmit="handleRegisterItem(event)">
-                <div class="form-group"><label>Item Title</label><input type="text" id="reg-title" required placeholder="e.g. Scientific Calculator"></div>
+                <div class="form-group"><label>Item Title</label><input type="text" id="reg-title" required placeholder="e.g. Casio Calculator"></div>
                 <div class="form-group"><label>Category</label>
                     <select id="reg-category">
                         <option value="Electronic devices">🔵 Electronic devices</option>
@@ -264,32 +262,32 @@
                         <option value="Personal belongings">🟡 Personal belongings</option>
                     </select>
                 </div>
-                <div class="form-group"><label>Features / Distinguishing Marks</label><textarea id="reg-desc" rows="2" placeholder="Stickers, color marks..."></textarea></div>
-                <button type="submit" class="btn-primary" style="width: 100%;">Save to Inventory</button>
+                <div class="form-group"><label>Unique Details / Marks</label><textarea id="reg-desc" rows="2" placeholder="Stickers, scratches..."></textarea></div>
+                <button type="submit" class="btn-primary">Get Security Code</button>
             </form>
         </div>
     </div>
 
-    <!-- Custom Notification Popup Modal -->
-    <div id="modal-alert" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 60;">
-        <div class="form-box" style="width: 100%; max-width: 380px; text-align: center;">
-            <h3 id="alert-title" style="font-size: 18px; color: white; margin-bottom: 10px;">Notice</h3>
-            <p id="alert-message" style="font-size: 14px; color: #94a3b8; margin-bottom: 20px; line-height: 1.4;"></p>
-            <button onclick="closeAlertModal()" class="btn-primary" style="width: 100%;">OK</button>
+    <!-- Modal: Alert -->
+    <div id="modal-alert" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index: 60; padding: 16px;">
+        <div class="form-box" style="text-align: center;">
+            <h3 id="alert-title" style="font-size: 16px; color: white; margin-bottom: 8px;">Notice</h3>
+            <p id="alert-message" style="font-size: 13px; color: #94a3b8; margin-bottom: 16px; line-height: 1.4;"></p>
+            <button onclick="closeAlertModal()" class="btn-primary">OK</button>
         </div>
     </div>
 
-    <!-- Custom Claim Code Input Modal -->
-    <div id="modal-claim" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index: 60;">
-        <div class="form-box" style="width: 100%; max-width: 380px;">
-            <h3 style="font-size: 18px; color: white; margin-bottom: 6px;">🔒 Security Verification</h3>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Enter the 4-digit code provided when this item was registered:</p>
+    <!-- Modal: Claim Verification -->
+    <div id="modal-claim" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index: 60; padding: 16px;">
+        <div class="form-box">
+            <h3 style="font-size: 16px; color: white; margin-bottom: 6px;">🔒 Security Verification</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">Enter the 4-digit code provided when this item was registered:</p>
             <div class="form-group">
-                <input type="text" id="claim-code-input" maxlength="4" placeholder="e.g. 4821" style="text-align: center; font-size: 20px; letter-spacing: 4px;">
+                <input type="text" id="claim-code-input" maxlength="4" placeholder="4821" style="text-align: center; font-size: 22px; letter-spacing: 6px;">
             </div>
             <div style="display: flex; gap: 10px;">
                 <button onclick="closeClaimModal()" class="btn-secondary" style="width: 50%;">Cancel</button>
-                <button onclick="submitClaimCode()" class="btn-primary" style="width: 50%;">Verify</button>
+                <button onclick="submitClaimCode()" class="btn-primary" style="width: 50%;">Verify Code</button>
             </div>
         </div>
     </div>
@@ -298,9 +296,7 @@
         let currentUser = { name: 'Guest Student', studentId: 'N/A', points: 50, itemsReturned: 0 };
         try {
             const savedUser = localStorage.getItem('ct_persistent_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-            }
+            if (savedUser) currentUser = JSON.parse(savedUser);
         } catch(e) {}
 
         let registeredItems = JSON.parse(localStorage.getItem('ct_registered')) || [];
@@ -313,18 +309,15 @@
             document.getElementById('alert-message').innerText = message;
             document.getElementById('modal-alert').style.display = 'flex';
         }
-        function closeAlertModal() {
-            document.getElementById('modal-alert').style.display = 'none';
-        }
+        function closeAlertModal() { document.getElementById('modal-alert').style.display = 'none'; }
 
         function claimItemPrompt(itemTitle) {
             document.getElementById('claim-code-input').value = '';
             document.getElementById('modal-claim').style.display = 'flex';
             document.getElementById('claim-code-input').focus();
         }
-        function closeClaimModal() {
-            document.getElementById('modal-claim').style.display = 'none';
-        }
+        function closeClaimModal() { document.getElementById('modal-claim').style.display = 'none'; }
+        
         function submitClaimCode() {
             const enteredCode = document.getElementById('claim-code-input').value.trim();
             closeClaimModal();
@@ -332,9 +325,9 @@
 
             const matched = registeredItems.find(i => i.code.toString() === enteredCode);
             if(matched) {
-                showAlert("✅ Verification Successful!", `Security code matches "${matched.title}". You may now claim this item.`);
+                showAlert("✅ Code Verified!", `Security code matches "${matched.title}". You are authorized to claim this item.`);
             } else {
-                showAlert("❌ Access Denied", "Incorrect 4-digit security code entered.");
+                showAlert("❌ Access Denied", "Incorrect 4-digit security code.");
             }
         }
 
@@ -344,9 +337,7 @@
         }
 
         function savePersistentUser() {
-            try {
-                localStorage.setItem('ct_persistent_user', JSON.stringify(currentUser));
-            } catch(e) {}
+            try { localStorage.setItem('ct_persistent_user', JSON.stringify(currentUser)); } catch(e) {}
         }
 
         function fetchCloudData() {
@@ -378,12 +369,12 @@
                 .catch(err => console.error("Cloud fetch error:", err));
         }
 
-        function getBadgeClass(category) {
+        function getBadgeStyle(category) {
             switch(category) {
                 case 'Electronic devices': return 'badge-blue';
                 case 'Books': return 'badge-red';
                 case 'Stationery': return 'badge-green';
-                case 'Personal belongings': default: return 'badge-yellow';
+                default: return 'badge-yellow';
             }
         }
 
@@ -401,7 +392,6 @@
             e.preventDefault();
             currentUser.name = document.getElementById('auth-name').value;
             currentUser.studentId = document.getElementById('auth-studentid').value;
-            
             savePersistentUser();
             updateUIUserHeader();
             closeAuthModal();
@@ -441,7 +431,7 @@
             list.sort((a, b) => b.points - a.points);
 
             if(list.length === 0) {
-                body.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 20px;">No leaderboard records yet.</td></tr>`;
+                body.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 16px;">No records yet.</td></tr>`;
                 return;
             }
 
@@ -457,10 +447,10 @@
                 return `
                     <tr>
                         <td>${rankDisplay}</td>
-                        <td style="font-weight: bold; color: white;">${item.name} ${isYou ? '<span style="font-size:11px; color:#10b981;">(You)</span>' : ''}</td>
-                        <td style="color: #94a3b8; font-size: 13px;">${item.studentId || 'N/A'}</td>
-                        <td>${item.itemsReturned || 0} items</td>
-                        <td style="font-weight: bold; color: #f59e0b;">⭐ ${item.points || 0} Pts</td>
+                        <td style="font-weight: bold; color: white;">${item.name} ${isYou ? '<span style="font-size:10px; color:#10b981;">(You)</span>' : ''}</td>
+                        <td style="color: #94a3b8; font-size: 12px;">${item.studentId || 'N/A'}</td>
+                        <td>${item.itemsReturned || 0}</td>
+                        <td style="font-weight: bold; color: #f59e0b;">⭐ ${item.points || 0}</td>
                     </tr>
                 `;
             }).join('');
@@ -473,21 +463,21 @@
             localStorage.setItem('ct_registered', JSON.stringify(registeredItems));
             closeRegisterModal();
             renderInventory();
-            showAlert("Item Registered!", `Your 4-Digit Security Code is: ${code}\nKeep this safe to claim your item if lost!`);
+            showAlert("Item Registered!", `Your 4-Digit Security Code is: ${code}\nKeep this safe to claim your item.`);
         }
 
         function renderInventory() {
             const grid = document.getElementById('inventory-grid');
             if(registeredItems.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">No registered items yet. Click "+ Register Item" to protect your belongings and get a 4-digit code.</div>`;
+                grid.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 30px;">No registered items yet. Click "+ Register" to generate a code.</div>`;
                 return;
             }
             grid.innerHTML = registeredItems.map(item => `
                 <div class="card" style="flex-direction: column; align-items: flex-start;">
-                    <span class="${getBadgeClass(item.category)}">${item.category}</span>
-                    <h4 style="margin-top: 10px; color: white;">${item.title}</h4>
-                    <p style="font-size: 13px; color: #34d399; font-family: monospace; font-weight: bold;">🔒 Security Code: ${item.code}</p>
-                    <p style="font-size: 12px; color: #94a3b8;">${item.desc || ''}</p>
+                    <span class="badge ${getBadgeStyle(item.category)}">${item.category}</span>
+                    <h4 style="margin-top: 6px; color: white; font-size: 15px;">${item.title}</h4>
+                    <p style="font-size: 13px; color: #34d399; font-family: monospace; font-weight: bold; margin-top: 4px;">🔒 Security Code: ${item.code}</p>
+                    <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${item.desc || ''}</p>
                 </div>
             `).join('');
         }
@@ -496,7 +486,7 @@
             e.preventDefault();
             const btn = document.getElementById('lost-submit-btn');
             btn.disabled = true;
-            btn.innerText = 'Syncing to Cloud...';
+            btn.innerText = 'Syncing...';
 
             const payload = {
                 action: 'reportLost',
@@ -517,18 +507,17 @@
             }).then(() => {
                 btn.disabled = false;
                 btn.innerText = 'Submit Lost Report';
-                showAlert("Success", "Your lost item report has been sent to Google Sheets.");
+                showAlert("Success", "Your report has been uploaded to Google Sheets.");
                 document.getElementById('form-report-lost').reset();
                 switchTab('catalog');
-            }).catch(err => {
+            }).catch(() => {
                 btn.disabled = false;
                 btn.innerText = 'Submit Lost Report';
-                showAlert("Success", "Form submitted.");
-                document.getElementById('form-report-lost').reset();
                 switchTab('catalog');
             });
         }
 
+        // FULL HD DRIVE IMAGE UPLOAD HANDLER
         function handleReportFound(e) {
             e.preventDefault();
             const btn = document.getElementById('found-submit-btn');
@@ -548,7 +537,7 @@
                     category: document.getElementById('found-category').value,
                     location: document.getElementById('found-location').value,
                     desc: document.getElementById('found-description').value,
-                    photo: evt.target.result,
+                    photo: evt.target.result, // Direct full base64 data for Drive app
                     timestamp: new Date().toLocaleString()
                 };
 
@@ -559,19 +548,18 @@
                     body: JSON.stringify(payload)
                 }).then(() => {
                     btn.disabled = false;
-                    btn.innerText = 'Publish to Cloud (+50 Pts)';
+                    btn.innerText = 'Publish to Drive (+50 Pts)';
                     currentUser.points += 50;
                     currentUser.itemsReturned = (currentUser.itemsReturned || 0) + 1;
                     savePersistentUser();
                     updateUIUserHeader();
                     syncUserToCloud();
-                    showAlert("Success!", "HD Photo uploaded to Google Drive & published!");
+                    showAlert("Success!", "HD Photo saved to Google Drive!");
                     document.getElementById('form-report-found').reset();
                     switchTab('catalog');
-                }).catch(err => {
+                }).catch(() => {
                     btn.disabled = false;
-                    btn.innerText = 'Publish to Cloud (+50 Pts)';
-                    showAlert("Success", "Submitted!");
+                    btn.innerText = 'Publish to Drive (+50 Pts)';
                     switchTab('catalog');
                 });
             }
@@ -586,22 +574,22 @@
             const grid = document.getElementById('catalog-grid');
             const items = filter === 'all' ? foundItems : foundItems.filter(i => i.category === filter);
             if(items.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 40px;">No items found in this category.</div>`;
+                grid.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 30px;">No items found in this category.</div>`;
                 return;
             }
             grid.innerHTML = items.map(item => `
                 <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
-                        ${item.photo ? `<img src="${item.photo}" style="width: 100%; height: 160px; object-fit: cover;">` : `<div style="width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 13px;">No Image Provided</div>`}
-                        <div style="padding: 16px;">
-                            <div style="margin-bottom: 8px;"><span class="${getBadgeClass(item.category)}">${item.category || 'Personal belongings'}</span></div>
-                            <h4 style="font-size: 16px; color: white; margin-bottom: 6px;">${item.title || 'Untitled Item'}</h4>
-                            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 6px;">📍 ${item.location || 'Campus'} | By: ${item.reporter || 'Anonymous'}</p>
-                            <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 14px;">${item.desc || ''}</p>
+                        ${item.photo ? `<img src="${item.photo}" style="width: 100%; height: 180px; object-fit: cover; display: block;">` : `<div style="width: 100%; height: 140px; background: #0f172a; display: flex; align-items: center; justify-content: center; color: #475569; font-size: 12px;">No Image Provided</div>`}
+                        <div style="padding: 14px;">
+                            <div style="margin-bottom: 6px;"><span class="badge ${getBadgeStyle(item.category)}">${item.category || 'Belongings'}</span></div>
+                            <h4 style="font-size: 15px; color: white; margin-bottom: 4px;">${item.title || 'Item'}</h4>
+                            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">📍 ${item.location || 'Campus'} | By: ${item.reporter || 'Anonymous'}</p>
+                            <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 10px;">${item.desc || ''}</p>
                         </div>
                     </div>
-                    <div style="padding: 0 16px 16px 16px;">
-                        <button onclick="claimItemPrompt('${item.title || 'Item'}')" class="btn-secondary" style="width: 100%; font-size: 13px;">🔒 Claim with 4-Digit Code</button>
+                    <div style="padding: 0 14px 14px 14px;">
+                        <button onclick="claimItemPrompt('${item.title || 'Item'}')" class="btn-secondary">🔒 Claim with Code</button>
                     </div>
                 </div>
             `).join('');
