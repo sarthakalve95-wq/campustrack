@@ -387,28 +387,25 @@
         }
 
         /* ---------------- Cloud data ---------------- */
-        function fetchCloudData() {
-            if(!SCRIPT_URL) return;
-            
-            fetch(SCRIPT_URL, {
-                redirect: 'follow'
-            })
-                .then(res => res.json())
-                .then(data => {
-                    foundItems = data.foundItems ? data.foundItems.reverse() : [];
-                    cloudUsers = data.users || [];
-                    
-                    if(currentUser.name !== 'Guest Student') {
-                        let match = cloudUsers.find(u => 
-                            u.name.toString().trim().toLowerCase() === currentUser.name.toString().trim().toLowerCase()
-                        );
-                        if(match) {
-                            currentUser.points = parseInt(match.points) || currentUser.points;
-                            currentUser.itemsReturned = parseInt(match.itemsReturned) || currentUser.itemsReturned;
-                            savePersistentUser();
-                            updateUIUserHeader();
-                        }
-                    }
+       function fetchCloudData() {
+    if(!SCRIPT_URL) return;
+    
+    fetch(SCRIPT_URL, { redirect: 'follow' })
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok: ' + res.status);
+            return res.json();
+        })
+        .then(data => {
+            foundItems = data.foundItems ? data.foundItems.reverse() : [];
+            cloudUsers = data.users || [];
+            renderCatalog(currentFilter);
+        })
+        .catch(err => {
+            console.error("Detailed Cloud Error:", err);
+            document.getElementById('catalog-grid').innerHTML = 
+                `<div style="text-align: center; color: #ef4444; padding: 30px;">Error: ${err.message}. Check console (F12).</div>`;
+        });
+}
 
                     renderCatalog(currentFilter);
                     if(!document.getElementById('tab-leaderboard').classList.contains('hidden')) {
