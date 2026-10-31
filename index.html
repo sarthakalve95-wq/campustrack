@@ -8,7 +8,7 @@
         // =========================================================================
         // ⬇️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL RIGHT HERE INSIDE QUOTES ⬇️
         // =========================================================================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUdjbZIZOawoWUdNDTL-GpIjNtbd4KJSbm6TCkDCzZe6Oa20Js-dUbzs9rEGlZuKiR/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWX5FQI5ctxsX_Gfztb7m50gD-IwjHIn6oPENhELfwxHm62dZUhSwwcvZSyehfd5Y/exec";
         // =========================================================================
     </script>
     <style>
@@ -411,7 +411,7 @@
                     if(!document.getElementById('tab-leaderboard').classList.contains('hidden')) {
                         renderLeaderboard();
                     }
-                })
+                )
                 .catch(err => {
                     console.error("Cloud fetch error:", err);
                     document.getElementById('catalog-grid').innerHTML = `<div style="text-align: center; color: #ef4444; padding: 30px;">Failed to load cloud records. Check Apps Script deployment.</div>`;
